@@ -6,11 +6,6 @@ results = []
 name_results = []
 no_digits = []
 links_config='Enabled'
-def spinning_cursor():
-    while True:
-        for cursor in '*':
-            yield cursor
-spinner = spinning_cursor()
 def options():
     print('\n*******\nOptions\n*******\n')
     optionChoice = input('[1]links\n[2]sources\n\nInput a number: ')
@@ -26,54 +21,36 @@ def options():
             print('[{}]{}'.format(sites.index(i),i))
         input('\nInput a number to toggle the source on or off: ')
 def getresults(search):
-    print('\nLoading: ')
-    def loading():
-        for i in range(5):
-            sys.stdout.write(next(spinner))
-            sys.stdout.flush()
-            time.sleep(0.3)
     for i in sites:
-        loading()
         url = i
         browser = webdriver.Chrome()
-        loading()
         browser.get(i)
-        loading()
         def searchBox(find, trueurl):
             searchbox = browser.find_element_by_id(find)
             searchbox.send_keys('{}'.format(trueurl))
             searchbox.submit()
-        loading()
         if i == "http://b-ok.org":searchId = 'searchFieldx'
-        loading()
         if i == "http://gen.lib.rus.ec/":searchId = 'searchform'
         searchBox(searchId, search)
-        loading()
         if i == "http://b-ok.org":
             webname='bookzz'
             links = browser.find_elements_by_class_name('tdn')
             names = browser.find_elements_by_class_name('color1')
-        loading()
         if i == "http://gen.lib.rus.ec/":
             webname='libgen'
             LinksElement = '//a[text()="[1]"]'
             NamesElement = '//a[text()="[1]"]//parent::td//preceding-sibling::td[@width]//a'
             links = browser.find_elements_by_xpath(LinksElement)
             names = browser.find_elements_by_xpath(NamesElement)
-        loading()
+        
         for link in links:
             href = link.get_attribute("href")
             results.append(href)
-        loading()
         for name in names:
             n = '[{}]{}'.format(webname,name.text)
             name_results.append(n)
-        loading()
         no_digits=name_results
-##        for i in name_results:
-##            a = filter(lambda x: x.isalpha(), i)
-##            a = '[{}]{}'.format(webname,"".join(list(a)))
-##            no_digits.append(a)        
+   
         browser.quit()
     a,b,running,dw=0,5,True,False
     while running:
