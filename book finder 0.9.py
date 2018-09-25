@@ -1,6 +1,5 @@
 import selenium.webdriver as webdriver
 import sys
-import time
 sites = ["http://b-ok.org","http://gen.lib.rus.ec/"]
 results = []
 name_results = []
@@ -23,7 +22,7 @@ def options():
 def getresults(search):
     for i in sites:
         url = i
-        browser = webdriver.Chrome()
+        browser = webdriver.PhantomJS()
         browser.get(i)
         def searchBox(find, trueurl):
             searchbox = browser.find_element_by_id(find)
@@ -77,8 +76,7 @@ def getresults(search):
                 break
     if dw == True:
         browser = webdriver.Chrome()
-        browser.get(proxy)
-        searchBox('input', url)
+        browser.get(url)
 def main():
     while True:
         print('\n*********\nMain Menu\n*********\n')
@@ -87,5 +85,7 @@ def main():
             getresults(input('\nenter the book you want to read: '))
         if startup == '2':
             options()
+        if startup == '3':
+            sys.exit()
 if __name__=='__main__':
     main()
